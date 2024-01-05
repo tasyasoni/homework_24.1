@@ -7,12 +7,18 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = '__all__'
+        fields = 'id', 'title', 'description', 'video'
 
 
+class LessonIncludeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Lesson
+        fields = ['title']
 
 class CourseSerializer(serializers.ModelSerializer):
     lessons_count = serializers.SerializerMethodField()
+    lessons = LessonIncludeSerializer(many=True)
 
 
     def get_lessons_count(self, instance):
@@ -20,7 +26,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'title', 'description', 'lessons', 'lessons_count']
+        fields = ('id', 'title', 'description', 'lessons_count', 'lessons')
 
 
 
