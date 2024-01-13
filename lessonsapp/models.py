@@ -1,5 +1,5 @@
 from django.db import models
-from usersapp.models import NULLABLE
+from usersapp.models import NULLABLE, User
 
 
 class Lesson(models.Model):
@@ -7,6 +7,7 @@ class Lesson(models.Model):
     description = models.TextField(max_length=100, verbose_name='описание')
     image = models.ImageField(upload_to='lesson/', verbose_name='картинка', **NULLABLE)
     video = models.TextField(max_length=100, verbose_name='ссылка_видео')
+    owner_lesson = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец_урока')
 
     def __str__(self):
         return f'{self.title}'
@@ -20,7 +21,7 @@ class Course(models.Model):
     image = models.ImageField(upload_to='course/', verbose_name='картинка', **NULLABLE)
     description = models.TextField(max_length=100, verbose_name='описание')
     lessons = models.ManyToManyField(Lesson, verbose_name='уроки')
-
+    owner_course = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name='владелец_курса')
 
     def __str__(self):
         return f'{self.title}'
