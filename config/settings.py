@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,6 +132,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'usersapp.User'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #из Джанго
+EMAIL_HOST = 'smtp.yandex.ru'  #адрес почтового сервера только для яндекс
+EMAIL_PORT = 465  # порт
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = 'pass' #почта С которой отправляются нотифаи os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = 'pass'  #реальный пароль -закрыть для гитхаб, создать портальный пароль os.getenv('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
+SERVER_EMAIL = os.getenv('EMAIL_HOST_USER')
+EMAIL_ADMIN = os.getenv('EMAIL_HOST_USER')
 
 # Настройки JWT-токенов
 REST_FRAMEWORK = {
@@ -138,7 +150,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ],
 }
 
