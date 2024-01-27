@@ -140,8 +140,8 @@ EMAIL_HOST = 'smtp.yandex.ru'  #адрес почтового сервера т�
 EMAIL_PORT = 465  # порт
 EMAIL_USE_SSL = True
 
-EMAIL_HOST_USER = 'pass' #почта С которой отправляются нотифаи os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = 'pass'  #реальный пароль -закрыть для гитхаб, создать портальный пароль os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') #почта С которой отправляются нотифаи os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  #реальный пароль -закрыть для гитхаб, создать портальный пароль os.getenv('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
 SERVER_EMAIL = os.getenv('EMAIL_HOST_USER')
@@ -175,4 +175,4 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ALLOW_ALL_ORIGINS = False
 
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')

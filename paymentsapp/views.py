@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -18,13 +19,18 @@ class PaymentCourseCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         new_payment = serializer.save()
+        print(new_payment)
         new_payment.user = self.request.user
-        new_payment.paid_course = Course.objects.get(pk=self.kwargs.get('pk'))
-        new_payment.save()
-        price = new_payment.paid_course.price
-        stripe_payment = StripePayments(user=new_payment.user, course=new_payment.paid_course, amount=price)
-        new_payment.stripe_session = stripe_payment.create_session()['session_id']
-        new_payment.url = stripe_payment.create_session()['url_pay']
+        print(new_payment.user)
+        course_pk = self.kwargs.get('pk')
+        print(course_pk)
+        new_payment.course = Course.objects.get(pk=course_pk)
+        print(new_payment.course)
+        session = StripePayments(settings.STRIPE_API_KEY).create_session(new_payment.course, new_payment.user)
+        new_payment.stripe_session = session.id
+        print(new_payment.stripe_session)
+        new_payment.url = session.url
+        print(new_payment.url)
         new_payment.save()
 
 
@@ -33,16 +39,23 @@ class PaymentLessonCreateAPIView(CreateAPIView):
     queryset = Payment.objects.all()
     permission_classes = (IsAuthenticated,)
 
+
     def perform_create(self, serializer):
         new_payment = serializer.save()
+        print(new_payment)
         new_payment.user = self.request.user
-        new_payment.paid_lesson = Lesson.objects.get(pk=self.kwargs.get('pk'))
+        print(new_payment.user)
+        lesson_pk = self.kwargs.get('pk')
+        print(lesson_pk)
+        new_payment.lesson = Lesson.objects.get(pk=lesson_pk)
+        print(new_payment.lesson)
+        session = StripePayments(settings.STRIPE_API_KEY).create_session(new_payment.lesson, new_payment.user)
+        new_payment.stripe_session = session.id
+        print(new_payment.stripe_session)
+        new_payment.url = session.url
+        print(new_payment.url)
         new_payment.save()
-        price = new_payment.paid_lesson.price
-        stripe_payment = StripePayments(user=new_payment.user, course=new_payment.paid_lesson, amount=price)
-        new_payment.stripe_session = stripe_payment.create_session()['session_id']
-        new_payment.url = stripe_payment.create_session()['url_pay']
-        new_payment.save()
+
 
 
 class PaymentListAPIView(generics.ListAPIView):
