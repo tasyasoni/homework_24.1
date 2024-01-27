@@ -3,6 +3,7 @@ from lessonsapp.models import Lesson, Course, Subscription
 from lessonsapp.validators import VideoValidator
 
 
+
 class LessonSerializer(serializers.ModelSerializer):
     # video = serializers.CharField(validators=[VideoValidator])
     class Meta:
@@ -25,6 +26,7 @@ class CourseSerializer(serializers.ModelSerializer):
     subscribed = serializers.SerializerMethodField(read_only=True)
 
 
+
     def get_lessons_count(self, instance):
         return instance.lessons.count()
 
@@ -35,6 +37,7 @@ class CourseSerializer(serializers.ModelSerializer):
             print(request and request.user)
             return Subscription.objects.filter(user=request.user, course=instance, subscribed=True).exists()
         return False
+
 
     class Meta:
         model = Course

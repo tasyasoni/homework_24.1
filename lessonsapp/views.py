@@ -1,4 +1,3 @@
-from django.contrib.auth.models import AnonymousUser
 from rest_framework import viewsets, generics
 from lessonsapp.models import Course, Lesson, Subscription
 from lessonsapp.paginators import LessonsPaginator
@@ -22,6 +21,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         elif self.action == 'destroy':
             permission_classes = [IsAuthenticated, IsCourseOwner]
         return [permission() for permission in permission_classes]
+
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
