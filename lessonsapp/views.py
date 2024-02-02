@@ -4,6 +4,7 @@ from lessonsapp.paginators import LessonsPaginator
 from lessonsapp.permissons import IsModerator, IsLessonOwner, IsCourseOwner
 from lessonsapp.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer, LessonIncludeSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from lessonsapp.services import sendmail
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -58,13 +59,18 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
     queryset = Subscription.objects.all()
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        new_subscription = serializer.save(user=self.request.user)
+        new_subscription.save()
 
 class SubscriptionUpdateView(generics.UpdateAPIView):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
     permission_classes = [IsModerator | IsCourseOwner|AllowAny]
 
-
+    def put(self, request, *args, **kwargs):
+        sendmail.delay()
+        return self.update(request, *args, **kwargs)
 
 class SubscriptionDestroyAPIView(generics.DestroyAPIView):
     queryset = Subscription.objects.all()
