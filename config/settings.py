@@ -196,10 +196,3 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 
-# Настройки для Celery
-CELERY_BEAT_SCHEDULE = {
-    'task-name': {
-        'task': 'users.tasks.block_inactive_users',
-        'schedule': timedelta(minutes=3),
-    },
-}
