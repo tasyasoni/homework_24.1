@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'homework_24.1',
-        'USER': 'postgres',
-        'PASSWORD': 'Antoniya2308'
-    }
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),# Пользователь для подключения
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),# Пароль для этого пользователя
+        }
 }
 
 # Password validation
