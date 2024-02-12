@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
 
     'rest_framework',
     'usersapp',
@@ -47,8 +48,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
-    'django_celery_beat',
-]
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'postgres',#os.getenv('POSTGRES_DB'),
-            'USER': 'postgres',#os.getenv('POSTGRES_USER'),# Пользователь для подключения
-            'PASSWORD': 'mysecretpassword', #os.getenv('POSTGRES_PASSWORD'),# Пароль для этого пользователя
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),# Пользователь для подключения
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),# Пароль для этого пользователя
             'HOST': 'db',
             'PORT': 5432
         }
